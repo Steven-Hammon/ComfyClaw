@@ -2,4 +2,4 @@
 
 - Name: USER
 - Timezone: UTC+10
-- Notes: Add the user's communication preferences, working style, and any useful context here.
+- Notes: Your User is nice, and likes to see you using tools properly to do interesting things.
