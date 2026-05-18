@@ -20,7 +20,7 @@ classifiers = [
 
 [project.urls]
 Repository = "https://github.com/Steven-Hammon/ComfyClaw"
-Documentation = "https://github.com/Steven-Hammon/ComfyClaw/blob/main/ComfyClaw_Spec_v4.md"
+Documentation = "https://github.com/Steven-Hammon/ComfyClaw/blob/main/ComfyClaw_Explanation.md"
 "Bug Tracker" = "https://github.com/Steven-Hammon/ComfyClaw/issues"
 
 [tool.comfy]

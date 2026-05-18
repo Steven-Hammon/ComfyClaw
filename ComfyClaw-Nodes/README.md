@@ -1,4 +1,4 @@
-﻿# ComfyClaw
+# ComfyClaw Nodes
 
 ComfyClaw is a ComfyUI custom node pack for building OpenClaw-style agents from small, composable workflow primitives.
 
@@ -6,7 +6,7 @@ The design goal is simple: each node does one job, returns predictable outputs, 
 
 ## Included Nodes
 
-This package registers the ComfyUI node set used by the full ComfyClaw repository.
+This folder contains the node package used by the full ComfyClaw repository.
 
 - Core: `Prompt_Combine`, `Text_Gate`, `Route`, `String_Find_Replace`, `File_Read`, `File_Write`, `Text_Cleaner`, `Random_from_List`
 - JSON/YAML: `JSON_Cleaner`, `JSON_Count_keys`, `JSON_Read`, `YAML_Read`, `YAML_To_JSON`, `JSON_To_YAML`, `JSON_TO_Markdown`, `Markdown_TO_JSON`, `String_To_Escaped_JSON`, `Escaped_JSON_To_String`, `JSON_Append`, `JSON_Edit`, `JSON_Find_First_Last`, `JSON_insert_key`, `JSON_Mass_Math`, `JSON_Mass_Math_Keys`, `JSON_Mass_Remove`, `JSON_Remove_Entry`, `JSON_Tally_Found_Keys`, `JSON_to_outputs`, `Embedding_Bundle_To_JSON`, `Embedding_Query_To_JSON`
@@ -62,7 +62,3 @@ python -m unittest -v test_comfyclaw.py
 2. Add the GitHub Actions secret `REGISTRY_ACCESS_TOKEN`.
 3. Commit and push to the GitHub repository.
 4. Bump the version in `pyproject.toml` for each registry release.
-
-
-
-
