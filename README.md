@@ -6,6 +6,8 @@ Most agent systems hide their loop inside code. ComfyClaw moves that loop into a
 
 It is meant for learning, experimenting, and prototyping. Once a workflow shape feels right, you can move the same design into faster application code.
 
+![ComfyClaw agent workflow running in ComfyUI](ComfyClaw.jpg)
+
 ## What You Get
 
 - **ComfyUI nodes** for text routing, JSON/YAML manipulation, files, LLM calls, embeddings, MCP calls, timers, tool calls, and persistent command execution.
