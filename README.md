@@ -24,6 +24,14 @@ The main limitation is the LLM's ability to follow strict tool-call instructions
 
 The point of ComfyClaw is to let people explore agentic concepts and test workflow ideas without building an entire agent system from scratch. It is a visible workbench first, and a production agent second.
 
+## Known Limitations And Roadmap
+
+- Tool-call formatting is still model-dependent and may need repair or retry logic.
+- Path setup is currently manual when ComfyClaw is not installed at the default location.
+- The local chat service is basic and does not yet include server/client internet access, text-to-speech, or speech-to-text.
+- The workflow is slower than a purpose-built code harness because the goal is visibility and experimentation.
+- Future improvements may include a path setup helper, stronger tool-call validation, cleaner workflow templates, and easier conversion from a tested ComfyUI workflow into faster code.
+
 ## Quick Start
 
 Clone this repository into ComfyUI `custom_nodes`:
@@ -58,6 +66,10 @@ python run_tool.py FETCH-GET "--url https://example.com"
 ```
 
 See `ComfyClaw-Tools/README.md` and `ComfyClaw-Tools/TOOLS.md` for the full tool list.
+
+## Clone Test
+
+If you are testing a fresh GitHub clone, follow `CLONE_TEST.md`. It covers the expected success criteria, ComfyUI portable Python install path, workflow loading, queue mode, and common troubleshooting points.
 
 ## Model Setup
 
