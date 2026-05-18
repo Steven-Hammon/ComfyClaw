@@ -1,0 +1,29 @@
+[project]
+name = "comfyclaw"
+description = "Minimal, composable ComfyUI custom nodes for building OpenClaw-style agents."
+version = "0.1.0"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = [
+    "PyYAML>=6.0",
+]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Repository = "https://github.com/Steven-Hammon/ComfyClaw"
+Documentation = "https://github.com/Steven-Hammon/ComfyClaw/blob/main/ComfyClaw_Spec_v4.md"
+"Bug Tracker" = "https://github.com/Steven-Hammon/ComfyClaw/issues"
+
+[tool.comfy]
+# Update this if your Comfy Registry publisher id differs from the GitHub owner.
+PublisherId = "steven-hammon"
+DisplayName = "ComfyClaw"

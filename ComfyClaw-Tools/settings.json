@@ -1,0 +1,7 @@
+{
+  "TruncatedCharacters": 40000,
+  "BrowserTimeoutMs": 10000,
+  "BrowserVisibleTextChars": 20000,
+  "BrowserPort": 9999,
+  "BrowserHeadless": true
+}

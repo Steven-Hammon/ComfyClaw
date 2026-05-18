@@ -1,0 +1,7 @@
+{
+  "download_dir": "C:/ComfyUI/ComfyUI/custom_nodes/ComfyClaw/ComfyClaw-Agent/Workspace/Downloads",
+  "chat_to_agent_file": "C:/ComfyUI/ComfyUI/custom_nodes/ComfyClaw/ComfyClaw-Agent/USER_MESSAGE.json",
+  "agent_to_chat_file": "C:/ComfyUI/ComfyUI/custom_nodes/ComfyClaw/ComfyClaw-Agent/LLM_MESSAGE.md",
+  "user_name": "You",
+  "agent_name": "Agent"
+}

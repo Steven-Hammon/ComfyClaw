@@ -1,0 +1,5 @@
+overlap=1
+before=1
+after=1
+topk_results=3
+embedding_model=qwen3-embedding:latest

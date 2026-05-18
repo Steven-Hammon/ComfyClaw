@@ -1,0 +1,287 @@
+{
+  "#SEND_MESSAGE": {
+    "CONTENT_(args):": "The text you want to send to the user as a string.",
+    "SUMMARY:": "Used sparingly, only when it's crucial to send a message to the user. Don't message the user, unless there is a new USER_MESSAGE from the USER, or you are unable to complete a task (in which case, specify the problem), or you have completed a task.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "SEND_MESSAGE",
+    "<CONTENT>:": "Hello",
+    "```": ""
+  },
+  "#SEARCH_LTM": {
+    "CONTENT_(args):": "what you want to think about as a string.",
+    "SUMMARY:": "This allows you to explore your long term memory. When you SEARCH_LTM (like a human thinking), a long term memory will pop up as a response in the next loop. You can then read it in the next loop and follow the train of thought. You can look at the keywords and SEARCH_LTM about the related long term memories. Or maybe SEARCH_LTM about the insights or the relationships. Try to use short thoughts like a human would, as if thinking aloud. Eg. What was that electrician's name?, How is that related to the holiday at the beach?, What type of guitar does Steve play? etc.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "SEARCH_LTM",
+    "<CONTENT>:": "What's Bob's Address?",
+    "```": ""
+  },
+  "#SLEEP": {
+    "CONTENT_(args):": "none",
+    "SUMMARY:": "Used for when you want to wait for a user response, or you just have nothing you want to do. If you are finished and have nothing else to do, just sleep over and over. You don't have to work all the time. And you don't have to think with SEARCH_LTM all the time either. Sometimes you can just relax and do nothing.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "SLEEP",
+    "<CONTENT>:": "",
+    "```": ""
+  },
+  "#FETCH-DOWNLOAD": {
+    "CONTENT_(args):": "`--url` required. `--out` required.",
+    "SUMMARY:": "Downloads a file as bytes and writes to `out`. Use when you already have a direct file URL.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FETCH-DOWNLOAD",
+    "<CONTENT>:": "--url https://example.com/file.pdf --out file.pdf",
+    "```": ""
+  },
+  "#PDF-EXTRACT": {
+    "CONTENT_(args):": "`--file` required. `--out` optional.",
+    "SUMMARY:": "Extracts text from a local PDF. Without `--out` returns truncated result; with `--out` saves full text. Only use this if you want to read a PDF.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "PDF-EXTRACT",
+    "<CONTENT>:": "--file doc.pdf",
+    "```": "",
+    "```markdown": "",
+    "<TOOL>:": "PDF-EXTRACT",
+    "<CONTENT>:": "--file report.pdf --out report.txt",
+    "```": ""
+  },
+  "#SEARCH-INTERNET": {
+    "CONTENT_(args):": "`--query` required. `--out` optional. `--results` optional (default: 10).",
+    "SUMMARY:": "Web search via DuckDuckGo. Returns 10 results by default, with title, URL, and snippet. Use `--results` to request more or fewer matches.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "SEARCH-INTERNET",
+    "<CONTENT>:": "--query Steven Hammon",
+    "```": ""
+  },
+  "#BROWSER-GOTO": {
+    "CONTENT_(args):": "`--url` required.",
+    "SUMMARY:": "Navigates the persistent browser to a URL. Always use this first. Returns Page State (URL, title, visible text, interactive selectors).",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "BROWSER-GOTO",
+    "<CONTENT>:": "--url https://example.com",
+    "```": ""
+  },
+  "#BROWSER-CLICK": {
+    "CONTENT_(args):": "`--selector` required.",
+    "SUMMARY:": "Clicks an element on the current page. Use selectors from Page State. Returns updated Page State.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "BROWSER-CLICK",
+    "<CONTENT>:": "--selector a:has-text('Login')",
+    "```": ""
+  },
+  "#BROWSER-TYPE": {
+    "CONTENT_(args):": "`--selector` required. `--text` required.",
+    "SUMMARY:": "Types text into an input on the current page. Returns updated Page State.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "BROWSER-TYPE",
+    "<CONTENT>:": "--selector #search --text python playwright",
+    "```": ""
+  },
+  "#BROWSER-PRESS": {
+    "CONTENT_(args):": "`--selector` required. `--key` required.",
+    "SUMMARY:": "Presses a keyboard key on an element. Use after `type` to submit forms with Enter, or for Tab/Escape/Arrow keys.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "BROWSER-PRESS",
+    "<CONTENT>:": "--selector #search --key Enter",
+    "```": ""
+  },
+  "#BROWSER-STATE": {
+    "CONTENT_(args):": "none",
+    "SUMMARY:": "Returns current Page State without interacting. Use to inspect the page between actions.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "BROWSER-STATE",
+    "<CONTENT>:": "",
+    "```": ""
+  },
+  "#BROWSER-SCREENSHOT": {
+    "CONTENT_(args):": "`--out` optional (default: screenshot.png).",
+    "SUMMARY:": "Saves a PNG of the current page. Use for visual verification after navigation or interaction.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "BROWSER-SCREENSHOT",
+    "<CONTENT>:": "--out page.png",
+    "```": ""
+  },
+  "#BROWSER-END": {
+    "CONTENT_(args):": "none",
+    "SUMMARY:": "Closes the persistent browser session. Use when the browser task is complete.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "BROWSER-END",
+    "<CONTENT>:": "",
+    "```": ""
+  },
+  "#RAGQUERYDOC-QUERY": {
+    "CONTENT_(args):": "`--path` required. `--query` required. `--chunk-type` required (paragraphs/words). `--chunk-size` required. `--out` optional.",
+    "SUMMARY:": "Semantic search over a local file using cached embeddings. Use when a file is too large to read in full. Retry with different `--chunk-type` or `--chunk-size` if results are too narrow or broad.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "RAGQUERYDOC-QUERY: --path C:\\Claw\\Workspace\\TOOLS.yaml --query which action returns cookies --chunk-type paragraphs --chunk-size 2",
+    "```": ""
+  },
+  "#FILE_READ-FULL": {
+    "CONTENT_(args):": "`--path` required. `--encoding` optional. `--include_line_numbers` optional.",
+    "SUMMARY:": "Reads entire file contents. Use only for small files; prefer `slice`, `head`, or `tail` for large files.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_READ-FULL",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\notes.txt --include_line_numbers true",
+    "```": ""
+  },
+  "#FILE_READ-SLICE": {
+    "CONTENT_(args):": "`--path` required. `--start_line` required. `--end_line` required. `--encoding` optional. `--include_line_numbers` optional.",
+    "SUMMARY:": "Reads a specific line range (1-indexed, inclusive). Use for large files when you know roughly where the content is.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_READ-SLICE",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\server.log --start_line 120 --end_line 160 --include_line_numbers true",
+    "```": ""
+  },
+  "#FILE_READ-HEAD": {
+    "CONTENT_(args):": "`--path` required. `--lines` optional (default: 20). `--encoding` optional. `--include_line_numbers` optional.",
+    "SUMMARY:": "Reads the first N lines. Use to inspect file structure or headers before reading the rest.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_READ-HEAD",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\config.yaml --lines 30",
+    "```": ""
+  },
+  "#FILE_READ-TAIL": {
+    "CONTENT_(args):": "`--path` required. `--lines` optional (default: 20). `--encoding` optional. `--include_line_numbers` optional.",
+    "SUMMARY:": "Reads the last N lines. Use for recent log entries or closing sections of a file.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_READ-TAIL",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\output.log --lines 50",
+    "```": ""
+  },
+  "#FILE_READ-SEARCH": {
+    "CONTENT_(args):": "`--path` required. `--pattern` required. `--encoding` optional. `--include_line_numbers` optional (default: true). `--use_regex` optional (default: false).",
+    "SUMMARY:": "Returns only lines matching a pattern. Use to locate specific content in large files; follow up with `slice` for context.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "FILE_READ-SEARCH": "",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\app.log --pattern error",
+    "```": ""
+  },
+  "#FILE_READ-METADATA": {
+    "CONTENT_(args):": "`--path` required.",
+    "SUMMARY:": "Returns file size, line count, encoding, and last modified time without reading contents. Use before deciding how to read a large file.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_READ-METADATA",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\data.csv",
+    "```": ""
+  },
+  "#FILE_WRITE-OVERWRITE": {
+    "CONTENT_(args):": "`--path` required. `--content` required. `--encoding` optional. `--create_if_missing` optional (default: true). `--backup` optional (default: false).",
+    "SUMMARY:": "Replaces entire file with `--content`. Use for new files or complete rewrites. Set `--backup true` to save original as `.bak`.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_WRITE-OVERWRITE",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\report.txt --content Full report content. --backup true",
+    "```": ""
+  },
+  "#FILE_WRITE-APPEND": {
+    "CONTENT_(args):": "`--path` required. `--content` required. `--encoding` optional. `--create_if_missing` optional (default: true).",
+    "SUMMARY:": "Adds the content (after `--content`) to the end of a file without modifying existing content.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_WRITE-APPEND",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\run.log --content Step 3 complete.",
+    "```": ""
+  },
+  "#FILE_WRITE-PREPEND": {
+    "CONTENT_(args):": "`--path` required. `--content` required. `--encoding` optional. `--create_if_missing` optional (default: true).",
+    "SUMMARY:": "Inserts `--content` at the start of a file, pushing existing content down.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_WRITE-PREPEND",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\notes.txt --content === Updated 2025-01-15 ===",
+    "```": ""
+  },
+  "#FILE_WRITE-INSERT_AT_LINE": {
+    "CONTENT_(args):": "`--path` required. `--content` required. `--line` required. `--encoding` optional. `--backup` optional (default: false).",
+    "SUMMARY:": "Inserts `--content` at a specific line number, shifting existing lines down. Use FILE_READ_SEARCH first to confirm the target line.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_WRITE-INSERT_AT_LINE",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\main.py --line 42 --content logger.debug('Checkpoint')",
+    "```": ""
+  },
+  "#FILE_WRITE-FIND_AND_REPLACE": {
+    "CONTENT_(args):": "`--path` required. `--find` required. `--replace` required. `--encoding` optional. `--use_regex` optional (default: false). `--replace_all` optional (default: true). `--backup` optional (default: false).",
+    "SUMMARY:": "Replaces occurrences of `--find` with `--replace`. Safer than overwrite for targeted edits. Returns count of replacements made.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE_WRITE-FIND_AND_REPLACE",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\config.yaml --find version:1.0.0 --replace version:1.1.0",
+    "```": ""
+  },
+  "#MCP-LIST": {
+    "CONTENT_(args):": "`--server` required. `--token` optional. `--timeout` optional. `--protocol_version` optional.",
+    "SUMMARY:": "Requests the tool manifest from an HTTP MCP server. Returns available tool names, descriptions, and input schemas. Always call this before MCP_CALL if you don't already know the server's tools.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "MCP-LIST",
+    "<CONTENT>:": "--server https://example.com/mcp",
+    "```": ""
+  },
+  "#MCP-CALL": {
+    "CONTENT_(args):": "`--server` required. Use either `--tool` JSON or `--name` plus optional `--arguments` JSON. `--token`, `--timeout`, and `--protocol_version` optional.",
+    "SUMMARY:": "Sends a tool call to an HTTP MCP server using MCP initialize, initialized, then tools/call. Use MCP_LIST first to get the correct tool name and input schema. Put JSON values last when possible so the raw value is preserved cleanly.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "MCP-CALL",
+    "<CONTENT>:": "--server https://example.com/mcp --tool {ame\\: \\search_files\\, \\arguments\\: {\\query\\: \\budget report\\}}",
+    "```": "",
+    "```markdown": "",
+    "<TOOL>:": "MCP-CALL",
+    "<CONTENT>:": "--server https://example.com/mcp --name search_files --arguments {\\query\\: \\budget report\\}",
+    "```": ""
+  },
+  "#FILE-LIST": {
+    "CONTENT_(args):": "`--path` required.",
+    "SUMMARY:": "Returns the contents of a directory in standard listing format (name, size, date). Use instead of CMD dir to avoid navigating away from the current working directory.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE-LIST",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\project",
+    "```": ""
+  },
+  "#FILE-TREE": {
+    "CONTENT_(args):": "`--path` required. `--depth` optional (default: 3).",
+    "SUMMARY:": "Returns the recursive directory structure under `--path` as an indented tree. Use `--depth` to limit how many levels deep it goes.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE-TREE",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\project",
+    "```": "",
+    "```markdown": "",
+    "<TOOL>:": "FILE-TREE",
+    "<CONTENT>:": "--path C:\\Claw\\Workspace\\project --depth 2",
+    "```": ""
+  },
+  "#CMD": {
+    "CONTENT_(args):": "command string as you would type it in Command Prompt.",
+    "SUMMARY:": "Runs a Command Prompt command. The CONTENT must be the exact command prompt as a human would type into into the CMD Prompt window. Avoid dangerous system commands. This is a persitant instance, separate from the other tools. This allows you to work in directories while you browse the internet without losing progress.",
+    "EXAMPLE:": "",
+    "```markdown": "",
+    "<TOOL>:": "CMD",
+    "<CONTENT>:": "dir",
+    "```": "",
+    "```markdown": "",
+    "<TOOL>:": "CMD",
+    "<CONTENT>:": "cd c: \\workspace",
+    "```": ""
+  }
+}

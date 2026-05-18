@@ -1,0 +1,3 @@
+# Runtime dependencies for the ComfyUI nodes.
+# ComfyClaw-Tools has its own requirements file and virtual environment.
+PyYAML>=6.0

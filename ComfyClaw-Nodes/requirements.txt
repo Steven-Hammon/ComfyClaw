@@ -1,0 +1,3 @@
+# Runtime dependencies for ComfyClaw.
+# Keep this file minimal and prefer the Python standard library where possible.
+PyYAML>=6.0
