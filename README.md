@@ -10,7 +10,7 @@ It is meant for learning, experimenting, and prototyping. Once a workflow shape 
 
 ## What You Get
 
-- **ComfyUI nodes** for text routing, JSON/YAML manipulation, files, LLM calls, embeddings, MCP calls, timers, tool calls, and persistent command execution.
+- **ComfyUI nodes** for text routing, JSON/YAML manipulation, files, multimodal LLM calls, embeddings, MCP calls, timers, tool calls, persistent command execution, media saving, and PyAutoGUI desktop OCR state capture.
 - **An agent workspace** with prompt files, memory files, heartbeat state, user message files, and tool descriptions.
 - **A CLI tool runner** that can be called by ComfyUI, another agent harness, or a human operator.
 - **A local chat bridge** that reads and writes the agent message files.

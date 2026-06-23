@@ -1,3 +1,16 @@
 # Runtime dependencies for ComfyClaw.
-# Keep this file minimal and prefer the Python standard library where possible.
+# Install this file into the same Python environment that runs ComfyUI.
 PyYAML>=6.0
+PyAutoGUI>=0.9.54
+Pillow>=10.0
+numpy>=1.24
+
+# OCR Python packages for PyAutoGUI_Simple_OCR.
+# Note: pytesseract still requires the external Tesseract-OCR executable.
+pytesseract>=0.3.13
+easyocr>=1.7.1
+paddleocr>=3.0.0
+paddlepaddle>=3.0.0
+
+# Optional MP3 encoding for Save_Media_As:
+# pydub>=0.25.1

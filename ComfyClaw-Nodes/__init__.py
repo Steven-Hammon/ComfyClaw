@@ -39,8 +39,10 @@ from .mcp_server_loader import MCPServerLoader
 from .or_and import OrAnd
 from .preview_any_as_text import PreviewAnyAsText
 from .prompt_combine import PromptCombine
+from .pyautogui_simple_ocr import PyAutoGUISimpleOCR
 from .random_from_list import RandomFromList
 from .route import Route
+from .save_media_as import SaveMediaAs
 from .string_find_replace import StringFindReplace
 from .string_to_escaped_json import StringToEscapedJSON
 from .text_cleaner import TextCleaner
@@ -106,6 +108,8 @@ NODE_CLASS_MAPPINGS = {
     "MCP_List_Tools": MCPListTools,
     "MCP_Call": MCPCall,
     "Exec": Exec,
+    "PyAutoGUI_Simple_OCR": PyAutoGUISimpleOCR,
+    "Save_Media_As": SaveMediaAs,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
@@ -161,6 +165,8 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "MCP_List_Tools": "MCP_List_Tools",
     "MCP_Call": "MCP_Call",
     "Exec": "Exec",
+    "PyAutoGUI_Simple_OCR": "PyAutoGUI_Simple_OCR",
+    "Save_Media_As": "Save_Media_As",
 }
 
 WEB_DIRECTORY = "./web"

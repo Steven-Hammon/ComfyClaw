@@ -201,6 +201,120 @@ class ComfyClawSmokeTests(unittest.TestCase):
         self.assertFalse(output)
         self.assertEqual(error, "operation must be Or or And.")
 
+    def test_pyautogui_simple_ocr_command_parser(self):
+        ocr_module = sys.modules["ComfyClaw.pyautogui_simple_ocr"]
+
+        parsed, error = ocr_module._parse_pyautogui_command('click(742, 381, button="left")')
+        self.assertEqual(error, "")
+        self.assertEqual(parsed.name, "click")
+        self.assertEqual(parsed.args, (742, 381))
+        self.assertEqual(parsed.kwargs, {"button": "left"})
+
+        is_wait, seconds, error = ocr_module._parse_wait_command("wait(2)")
+        self.assertTrue(is_wait)
+        self.assertEqual(seconds, 2.0)
+        self.assertEqual(error, "")
+
+        parsed, error = ocr_module._parse_pyautogui_command('__import__("os").system("echo unsafe")')
+        self.assertIsNone(parsed)
+        self.assertIn("unsupported PyAutoGUI command", error)
+
+    def test_pyautogui_simple_ocr_tesseract_path_input(self):
+        ocr_module = sys.modules["ComfyClaw.pyautogui_simple_ocr"]
+        inputs = MODULE.PyAutoGUISimpleOCR.INPUT_TYPES()["required"]
+        self.assertIn("tesseract_exe_path", inputs)
+
+        fake_dir = ARTIFACTS_DIR / f"tesseract_{uuid.uuid4().hex}"
+        fake_dir.mkdir(parents=True, exist_ok=True)
+        fake_exe = fake_dir / "tesseract.exe"
+        fake_exe.write_text("", encoding="utf-8")
+
+        self.assertEqual(ocr_module._resolve_tesseract_exe_path(str(fake_exe)), str(fake_exe))
+        self.assertEqual(ocr_module._resolve_tesseract_exe_path(str(fake_dir)), str(fake_exe))
+        with self.assertRaises(FileNotFoundError):
+            ocr_module._resolve_tesseract_exe_path(str(fake_dir / "missing.exe"))
+
+    def test_pyautogui_simple_ocr_paddle_safe_cpu_profile(self):
+        ocr_module = sys.modules["ComfyClaw.pyautogui_simple_ocr"]
+        first_profile = ocr_module._paddle_ocr_init_kwargs()[0]
+        self.assertEqual(first_profile["device"], "cpu")
+        self.assertEqual(first_profile["engine"], "paddle_static")
+        self.assertFalse(first_profile["enable_mkldnn"])
+        self.assertFalse(first_profile["enable_cinn"])
+        self.assertEqual(first_profile["engine_config"]["run_mode"], "paddle")
+        self.assertFalse(first_profile["engine_config"]["enable_new_ir"])
+
+        old_value = os.environ.pop("PADDLE_PDX_ENABLE_MKLDNN_BYDEFAULT", None)
+        try:
+            ocr_module._configure_paddle_safe_cpu_env()
+            self.assertEqual(os.environ["PADDLE_PDX_ENABLE_MKLDNN_BYDEFAULT"], "0")
+        finally:
+            if old_value is None:
+                os.environ.pop("PADDLE_PDX_ENABLE_MKLDNN_BYDEFAULT", None)
+            else:
+                os.environ["PADDLE_PDX_ENABLE_MKLDNN_BYDEFAULT"] = old_value
+
+    def test_pyautogui_simple_ocr_filter_and_json_schema(self):
+        ocr_module = sys.modules["ComfyClaw.pyautogui_simple_ocr"]
+        normalized = ocr_module._normalize_generic_ocr_result(
+            [{"rec_texts": ["Save"], "rec_scores": [0.97], "rec_boxes": [[1, 2, 40, 14]]}]
+        )
+        self.assertEqual(normalized, [{"text": "Save", "bbox": [1, 2, 40, 14], "confidence": 0.97}])
+
+        entries = [
+            {"text": "Generate", "bbox": [1800, 980, 1920, 1020], "confidence": 0.98},
+            {"text": "this is too long", "bbox": [0, 0, 80, 20], "confidence": 0.99},
+            {"text": "Wide", "bbox": [0, 0, 500, 20], "confidence": 0.99},
+            {"text": "Low", "bbox": [0, 0, 40, 20], "confidence": 0.1},
+        ]
+
+        filtered = ocr_module._filter_ocr_entries(
+            entries,
+            max_text_chars=15,
+            max_box_width=140,
+            max_box_height=80,
+            min_confidence=0.5,
+        )
+        self.assertEqual(filtered, [{"text": "Generate", "bbox": [1800, 980, 1920, 1020], "confidence": 0.98}])
+
+        payload = json.loads(ocr_module._build_ocr_json([1920, 1080], [742, 381], filtered))
+        self.assertEqual(payload["resolution"], [1920, 1080])
+        self.assertEqual(payload["cursor"], [742, 381])
+        self.assertEqual(payload["ocr"], filtered)
+
+    def test_save_media_as_text(self):
+        node = MODULE.SaveMediaAs()
+        path = ARTIFACTS_DIR / f"media_{uuid.uuid4().hex}"
+        file_path, error = node.save_media_as(str(path), "txt", text_input="hello media")
+        self.assertEqual(error, "")
+        self.assertTrue(file_path.endswith(".txt"))
+        self.assertEqual(path.with_suffix(".txt").read_text(encoding="utf-8"), "hello media")
+
+    def test_llm_call_media_path_only_and_payloads(self):
+        llm_module = sys.modules["ComfyClaw.llm_call"]
+
+        bundle = llm_module._normalize_media_inputs(
+            "Look at this.",
+            "path_only",
+            "png",
+            "wav",
+            image_file_path=r"C:\tmp\screen.png",
+            sound_file_path=r"C:\tmp\sound.wav",
+        )
+        self.assertEqual(bundle.error, "")
+        self.assertIn("[Media]", bundle.prompt)
+        self.assertIn(r"image_file_path: C:\tmp\screen.png", bundle.prompt)
+        self.assertIn(r"sound_file_path: C:\tmp\sound.wav", bundle.prompt)
+
+        direct_bundle = llm_module._normalize_media_inputs("Look.", "path_only", "png", "wav", image_input=object())
+        self.assertIn("path_only cannot use image_input", direct_bundle.error)
+
+        media = llm_module._Base64Media("aGVsbG8=", "image/png", "test")
+        openai_messages = llm_module._build_openai_messages("", llm_module._MediaBundle("Look.", (media,), ()), "wav")
+        self.assertEqual(openai_messages[0]["role"], "user")
+        self.assertEqual(openai_messages[0]["content"][1]["type"], "image_url")
+        self.assertTrue(openai_messages[0]["content"][1]["image_url"]["url"].startswith("data:image/png;base64,"))
+
     def test_trigger(self):
         node = MODULE.Trigger()
         self.assertEqual(node.trigger("ready"), ("", True))
@@ -363,6 +477,7 @@ class ComfyClawSmokeTests(unittest.TestCase):
         self.assertIn("String_To_Escaped_JSON", MODULE.NODE_CLASS_MAPPINGS)
         self.assertIn("Escaped_JSON_To_String", MODULE.NODE_CLASS_MAPPINGS)
         self.assertIn("Tool_Caller", MODULE.NODE_CLASS_MAPPINGS)
+        self.assertIn("Save_Media_As", MODULE.NODE_CLASS_MAPPINGS)
         self.assertNotIn("CC_ChunkSplitter", MODULE.NODE_CLASS_MAPPINGS)
         self.assertEqual(MODULE.ChunkSplitter.CATEGORY, "ComfyClaw/Embedding")
         self.assertEqual(MODULE.JSONRead.CATEGORY, "ComfyClaw/JSON")
@@ -382,6 +497,7 @@ class ComfyClawSmokeTests(unittest.TestCase):
         self.assertEqual(MODULE.PreviewAnyAsText.CATEGORY, "ComfyClaw/Utility")
         self.assertEqual(MODULE.RandomFromList.CATEGORY, "ComfyClaw/Core")
         self.assertEqual(MODULE.ToolCaller.CATEGORY, "ComfyClaw/System")
+        self.assertEqual(MODULE.SaveMediaAs.CATEGORY, "ComfyClaw/Utility")
 
     def test_preview_any_as_text(self):
         node = MODULE.PreviewAnyAsText()

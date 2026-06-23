@@ -12,9 +12,9 @@ This folder contains the node package used by the full ComfyClaw repository.
 - JSON/YAML: `JSON_Cleaner`, `JSON_Count_keys`, `JSON_Read`, `YAML_Read`, `YAML_To_JSON`, `JSON_To_YAML`, `JSON_TO_Markdown`, `Markdown_TO_JSON`, `String_To_Escaped_JSON`, `Escaped_JSON_To_String`, `JSON_Append`, `JSON_Edit`, `JSON_Find_First_Last`, `JSON_insert_key`, `JSON_Mass_Math`, `JSON_Mass_Math_Keys`, `JSON_Mass_Remove`, `JSON_Remove_Entry`, `JSON_Tally_Found_Keys`, `JSON_to_outputs`, `Embedding_Bundle_To_JSON`, `Embedding_Query_To_JSON`
 - Embedding: `Load_Embedding_Model`, `Load_Embedding_API`, `Embedding`, `Embedding_Query`, `Chunk_Splitter`
 - LLM: `LLM_API_Loader`, `LLM_Model_Loader`, `LLMCall`
-- Utility: `Boolean_Output_Switch`, `Or_And`, `Any_To_Something`, `Token_Estimator`, `Timestamp`, `Timer_Node`, `Trigger`, `Has_Changed`, `Preview_Any_As_Text`
+- Utility: `Boolean_Output_Switch`, `Or_And`, `Any_To_Something`, `Save_Media_As`, `Token_Estimator`, `Timestamp`, `Timer_Node`, `Trigger`, `Has_Changed`, `Preview_Any_As_Text`
 - MCP: `MCP_Server_Loader`, `MCP_List_Tools`, `MCP_Call`
-- System: `Exec`
+- System: `Exec`, `Tool_Caller`, `PyAutoGUI_Simple_OCR`
 
 ## Installation
 
@@ -40,6 +40,9 @@ When the full repository is cloned into `custom_nodes`, ComfyUI imports the root
 - `JSON_to_outputs` adds output mode dropdowns through `web/json_to_outputs.js`.
 - `Chunk_Splitter` uses fixed `main_chunk`, `chunk_limit`, and `chunk_overlap` sections, each with its own split type and up to 5 custom markers.
 - `Exec` keeps a per-node shell session alive across runs until you send `exit`, and it can return either the current command output or the full session transcript in `terminal_text`.
+- `PyAutoGUI_Simple_OCR` runs one PyAutoGUI-style desktop command, captures a fresh desktop state, composites optional background/screenshot/overlay/cursor image layers, and returns normalized OCR JSON plus an `error_string`. `wait` and `wait(seconds)` are handled as polling commands. Tesseract can use `tesseract_exe_path`, or auto-detects common Windows install paths. PaddleOCR uses a conservative CPU profile with MKLDNN/oneDNN disabled to avoid common Windows Paddle runtime failures.
+- `LLMCall` accepts optional `IMAGE` and `AUDIO` inputs plus `image_file_path` and `sound_file_path`. `media_conversion` is explicit: `base64` sends media bytes in the request where supported, while `path_only` appends stable media path lines to the prompt.
+- `Save_Media_As` saves a ComfyUI image, audio, or text input as `png`, `jpg`, `wav`, `mp3`, or `txt`. WAV is built in; MP3 encoding requires optional `pydub` plus ffmpeg.
 
 ## Validation
 
